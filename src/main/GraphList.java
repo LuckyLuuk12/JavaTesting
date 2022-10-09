@@ -13,6 +13,7 @@ public class GraphList {
   private final HashMap<Tuple, Integer> weights = new HashMap<>(); // CREATE HASHMAP with array key and weight as value
   ArrayList<ArrayList<Integer>> graph; // = new ArrayList<>(size);
   ArrayList<Tuple> edges = new ArrayList<>();
+  ArrayList<Integer> inNegCycle = new ArrayList<>();
   /* for the search algorithms */
   private final int[] explored, discovered, predecessor, dtime, ftime;
   private final int UNDISCOVERED = -1;
@@ -175,6 +176,7 @@ public class GraphList {
     int[] d = new int[this.size];
     for(int u = 0; u < this.size; u++) {
       d[u] = INF;
+      predecessor[u] = NULL;
     }
     d[v] = 0;
     int step = 0;
@@ -184,6 +186,7 @@ public class GraphList {
         int u = t.fst(); int w = t.snd();
         if(d[u] + weights.get(new Tuple(u, w)) < d[w]) {
           d[w] = d[u] + weights.get(new Tuple(u, w));
+          predecessor[w] = u;
           System.out.println(step+". traversed edge: "+t+" path weight: "+d[w]);
           step++;
         }
@@ -192,7 +195,12 @@ public class GraphList {
     for(Tuple t : edges) {
       int u = t.fst(); int w = t.snd();
       if(d[u] + weights.get(new Tuple(u, w)) < d[w]) {
-        System.out.println("In negative cycle: "+t);
+        int p = u;
+        while(!inNegCycle.contains(p)) {
+          inNegCycle.add(p);
+          System.out.println("In negative cycle: "+p);
+          p = predecessor[p];
+        }
         this.hasNegativeCycle = true;
       }
     }

@@ -105,10 +105,6 @@ public class CommandLine {
 
   public void executeCommands(String[] commands) {
     String[] pars = commands[0].split(" ");
-    //System.out.println("commands:");
-    //for(String com : commands) System.out.println(com);
-    //System.out.println("pars:");
-    //for(String par : pars) System.out.println(par);
     if(pars[0].toLowerCase().contains("help")) {
       System.out.print(
         """
