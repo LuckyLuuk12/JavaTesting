@@ -1,3 +1,11 @@
+/**
+ *
+ *
+ * @author Luuk Kablan
+ * @verion 1.0
+ * @since 9-10-2022 (dd-mm-yy)
+ */
+
 package main;
 
 import java.io.BufferedReader;
