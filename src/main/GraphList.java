@@ -18,7 +18,7 @@ public class GraphList {
   private final int UNDISCOVERED = -1;
   private final int DISCOVERED = 1;
   private final int NULL = -2;
-  private final int INF = Integer.MAX_VALUE;
+  private final int INF = Integer.MAX_VALUE/2; // create some "infinity" that's just a really high number
 
   public GraphList(int size) {
     this.size = size;
@@ -177,17 +177,24 @@ public class GraphList {
       d[u] = INF;
     }
     d[v] = 0;
+    int step = 0;
     for(int i = 1; i < this.size-1; i++) {
+      step++;
       for(Tuple t : edges) {
         int u = t.fst(); int w = t.snd();
         if(d[u] + weights.get(new Tuple(u, w)) < d[w]) {
           d[w] = d[u] + weights.get(new Tuple(u, w));
+          System.out.println(step+". traversed edge: "+t+" path weight: "+d[w]);
+          step++;
         }
       }
     }
     for(Tuple t : edges) {
       int u = t.fst(); int w = t.snd();
-      if(d[u] + weights.get(new Tuple(u, w)) < d[w]) this.hasNegativeCycle = true;
+      if(d[u] + weights.get(new Tuple(u, w)) < d[w]) {
+        System.out.println("In negative cycle: "+t);
+        this.hasNegativeCycle = true;
+      }
     }
   }
   public void showPredecessors() {
@@ -241,6 +248,9 @@ public class GraphList {
   private boolean goesTo(int from, int to) {
     return edges.contains(new Tuple(from, to));
   }
+  /**
+   * @return whether the graph has a negative cycle, only works after performing bellmanFord()
+   */
   public boolean hasNegativeCycle() {
     return this.hasNegativeCycle;
   }
