@@ -86,4 +86,36 @@ public class Crypto {
     }
     throw new IllegalArgumentException( Arrays.toString( array ) );
   }
+
+  /* Modulo calculation stuff: */
+  public void pollardsRho() {
+    int a = 15; // given by exercise
+    int b = 1;  // given by exercise
+    int c = 0;  // given by exercise
+    int q = 31; // modulo of the group
+    int l = 10; // order of the generator / subgroup
+    int h = 4;  // the right hand side of g^x = h (mod q)
+    int g = 15; // generator
+    ArrayList<Integer> aAlreadyFound = new ArrayList<>();
+    for(int i = 1; i <= 0.5*q; i++) {
+      if(aAlreadyFound.contains(a)) break;
+      aAlreadyFound.add(a);
+      System.out.println("Iteration "+i+":\\\\");
+      if(a%3 == 1) {
+        System.out.println("$a_{"+(i-1)+"} \\mod 3 = 1$ so we get $(a\\cdot g, b+1, c) = $\\\\");
+        a = (a * g) % q;
+        b = (b + 1) % l;
+      } else if(a%3 == 2) {
+        System.out.println("$a_{"+(i-1)+"} \\mod 3 = 2$ so we get $(a\\cdot h, b, c+1) = $\\\\");
+        a = (a * h) % q;
+        c = (c + 1) % l;
+      } else {
+        a = (a * a) % q;
+        System.out.println("$a_{"+(i-1)+"} \\mod 3 = 0$ so we get $(a^2, 2b, 2c) = $\\\\");
+        b = (2 * b) % l;
+        c = (2 * c) % l;
+      }
+      System.out.println("$(a_{"+i+"}, b_{"+i+"}, c_{"+i+"}) = ("+a+", "+b+", "+c+")$\\\\");
+    }
+  }
 }

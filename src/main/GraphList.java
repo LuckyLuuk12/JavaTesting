@@ -11,9 +11,9 @@ public class GraphList {
   private boolean isWeighted = false;
   private boolean hasNegativeCycle = false;
   private final HashMap<Tuple, Integer> weights = new HashMap<>(); // CREATE HASHMAP with array key and weight as value
-  ArrayList<ArrayList<Integer>> graph; // = new ArrayList<>(size);
-  ArrayList<Tuple> edges = new ArrayList<>();
-  ArrayList<Integer> inNegCycle = new ArrayList<>();
+  private ArrayList<ArrayList<Integer>> graph; // = new ArrayList<>(size);
+  private ArrayList<Tuple> edges = new ArrayList<>();
+  private ArrayList<Integer> inNegCycle = new ArrayList<>();
   /* for the search algorithms */
   private final int[] explored, discovered, predecessor, dtime, ftime;
   private final int UNDISCOVERED = -1;
@@ -49,9 +49,6 @@ public class GraphList {
     this.predecessor = new int[size];
     this.dtime = new int[size];
     this.ftime= new int[size];
-  }
-  public int size() {
-    return this.size;
   }
   /**
    * @param v1 starting vertex
@@ -174,13 +171,13 @@ public class GraphList {
   public void bellmanFord(int v) {
     if(!isWeighted) return;
     int[] d = new int[this.size];
-    for(int u = 0; u < this.size; u++) {
+    for(int u = 0; u < this.size; u++) { // initialization
       d[u] = INF;
       predecessor[u] = NULL;
     }
     d[v] = 0;
     int step = 0;
-    for(int i = 1; i < this.size-1; i++) {
+    for(int i = 1; i < this.size-1; i++) { // important part
       step++;
       for(Tuple t : edges) {
         int u = t.fst(); int w = t.snd();
@@ -192,7 +189,7 @@ public class GraphList {
         }
       }
     }
-    for(Tuple t : edges) {
+    for(Tuple t : edges) { // detecting negative cycles
       int u = t.fst(); int w = t.snd();
       if(d[u] + weights.get(new Tuple(u, w)) < d[w]) {
         int p = u;
@@ -270,4 +267,12 @@ public class GraphList {
       System.out.print("\n");
     }
   }
+
+  /* GETTERS: */
+  public int size() {
+    return this.size;
+  }
+  public ArrayList<ArrayList<Integer>> getGraph() { return this.graph; }
+  public ArrayList<Tuple> getEdges() { return this.edges; }
+  public HashMap<Tuple, Integer> getWeights() { return this.weights; }
 }

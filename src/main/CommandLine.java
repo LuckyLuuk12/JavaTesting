@@ -3,6 +3,7 @@ package main;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -169,16 +170,23 @@ public class CommandLine {
       if(pars.length > 1) dg.bellmanFord(Integer.parseInt(pars[1])); else dg.bellmanFord(0);
       System.out.println("> hasNegativeCycle: "+dg.hasNegativeCycle());
     }
-    else if(pars[0].toLowerCase().contains("lfsr ") && pars.length > 2) {
+    else if(pars[0].toLowerCase().contains("lfsr") && pars.length > 2) {
       c.LFSR(stringToList(pars[1]), Integer.parseInt(pars[2]));
     }
-    else if(pars[0].toLowerCase().contains("inc ") && pars.length > 1) {
+    else if(pars[0].toLowerCase().contains("inc") && pars.length > 1) {
       System.out.println(c.binaryStringIncreaser(pars[1]));
     }
-    else if(pars[0].toLowerCase().contains("findkey ") && pars.length > 1) {
+    else if(pars[0].toLowerCase().contains("findkey") && pars.length > 1) {
       System.out.println(c.exhaustiveKeySearch(pars[1]));
     }
-    else { System.out.println("Invalid command.."); }
+    else if(pars[0].toLowerCase().contains("pollard")) {
+      c.pollardsRho();
+    }
+    else {
+      System.out.println("Invalid command..");
+      System.out.println("commands: "+ Arrays.toString(commands));
+      System.out.println("pars: "+ Arrays.toString(pars));
+    }
     if(commands.length > 1) {
       //System.out.println("next command: "+commands[1]+" length: "+commands.length);
       executeCommands(Arrays.copyOfRange(commands, 1, commands.length));
